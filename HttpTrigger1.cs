@@ -1,9 +1,10 @@
-using AzureFunction.Services;
+using System.Net;
+using AzureFunction;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
-using Microsoft.VisualBasic;
 
 namespace Nsv.Function;
 
@@ -17,20 +18,21 @@ public class HttpTrigger1
     }
 
     [Function("HttpTrigger1")]
-    public IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequest req)
+    public MultiResponse Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req,
+        FunctionContext executionContext)
     {
         _logger.LogInformation("HttpTrigger1 is triggered");
-
-        req.Query.TryGetValue("name", out var name);
-        if (string.IsNullOrEmpty(name))
+        var name = req.Query.Get("name");
+        //req.Query.TryGetValue("name", out var name);
+        var response = req.CreateResponse(HttpStatusCode.OK);
+        response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
+        var message = $"Hello, {name}!";
+        response.WriteString(message);
+        return new MultiResponse()
         {
-            return new BadRequestObjectResult("Please provide a string input in query or body.");
-        }
-
-        var connectionString = ConnectionStringHelper.GetAppInsightsInstrumentationKey();
-        var connectionString2 = Environment.GetEnvironmentVariable(
-            "APPSETTING_APPLICATIONINSIGHTS_CONNECTION_STRING");
-
-        return new OkObjectResult($"Welcome to Azure Functions! {connectionString}_{connectionString2}");
+            // Write a single message.
+            Messages = [message],
+            HttpResponse = response
+        };
     }
 }
