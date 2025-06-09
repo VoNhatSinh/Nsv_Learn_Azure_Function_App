@@ -16,8 +16,4 @@ builder.Logging.AddApplicationInsights(configureTelemetryConfiguration: configur
 }, _ => { });
 builder.Logging.AddFilter<ApplicationInsightsLoggerProvider>("AzureFunction", LogLevel.Information);
 
-builder.Services
-    .AddApplicationInsightsTelemetryWorkerService()
-    .ConfigureFunctionsApplicationInsights();
-
 builder.Build().Run();

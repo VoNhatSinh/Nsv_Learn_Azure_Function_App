@@ -1,3 +1,4 @@
+using AzureFunction.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
@@ -26,6 +27,10 @@ public class HttpTrigger1
             return new BadRequestObjectResult("Please provide a string input in query or body.");
         }
 
-        return new OkObjectResult($"Welcome to Azure Functions! {name}");
+        var connectionString = ConnectionStringHelper.GetAppInsightsInstrumentationKey();
+        var connectionString2 = Environment.GetEnvironmentVariable(
+            "APPSETTING_APPLICATIONINSIGHTS_CONNECTION_STRING");
+
+        return new OkObjectResult($"Welcome to Azure Functions! {connectionString}_{connectionString2}");
     }
 }
