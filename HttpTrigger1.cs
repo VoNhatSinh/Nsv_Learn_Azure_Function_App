@@ -18,7 +18,7 @@ public class HttpTrigger1
     [Function("HttpTrigger1")]
     public IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequest req)
     {
-        _logger.LogInformation("C# HTTP trigger function processed a request.");
+        _logger.LogInformation("HttpTrigger1 is triggered");
 
         req.Query.TryGetValue("name", out var name);
         if (string.IsNullOrEmpty(name))
