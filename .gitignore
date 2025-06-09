@@ -10,3 +10,4 @@ bld/
 [Ll]og/
 .idea/
 *.DotSettings
+local.settings.json
