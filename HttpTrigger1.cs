@@ -18,16 +18,15 @@ public class HttpTrigger1
     }
 
     [Function("HttpTrigger1")]
-    public MultiResponse Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req,
+    public async Task<MultiResponse> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post")] HttpRequestData req,
         FunctionContext executionContext)
     {
         _logger.LogInformation("HttpTrigger1 is triggered");
         var name = req.Query.Get("name");
-        //req.Query.TryGetValue("name", out var name);
         var response = req.CreateResponse(HttpStatusCode.OK);
         response.Headers.Add("Content-Type", "text/plain; charset=utf-8");
         var message = $"Hello, {name}!";
-        response.WriteString(message);
+        await response.WriteStringAsync(message);
         return new MultiResponse()
         {
             // Write a single message.
