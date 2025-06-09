@@ -5,7 +5,7 @@ namespace AzureFunction
 {
     public class MultiResponse
     {
-        [QueueOutput("outqueue",Connection = "AzureWebJobsStorage")]
+        [QueueOutput("testqueue",Connection = "AzureWebJobsStorage")]
         public string[] Messages { get; set; }
         public HttpResponseData HttpResponse { get; set; }
     }
