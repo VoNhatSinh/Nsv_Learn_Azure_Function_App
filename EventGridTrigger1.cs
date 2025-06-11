@@ -20,6 +20,6 @@ public class EventGridTrigger1
     [Function(nameof(EventGridTrigger1))]
     public void Run([EventGridTrigger] CloudEvent cloudEvent)
     {
-        _logger.LogInformation("Event type: {type}, Event subject: {subject}", cloudEvent.Type, cloudEvent.Subject);
+        _logger.LogInformation("EventGridTrigger1 is triggered");
     }
 }
